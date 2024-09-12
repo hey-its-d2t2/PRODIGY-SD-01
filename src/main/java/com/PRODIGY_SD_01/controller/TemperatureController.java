@@ -22,19 +22,38 @@ public class TemperatureController {
 
     @PostMapping("/convert")
     public String convertTemperature(@RequestParam double value,
-                                     @RequestParam String unit,
+                                     @RequestParam String fromUnit,
+                                     @RequestParam String toUnit,
                                      Model model) {
-        Temperature inputTemp = new Temperature(value, unit);
 
-        Temperature celsius = temperatureService.convertToCelsius(inputTemp);
-        Temperature fahrenheit = temperatureService.convertToFahrenheit(inputTemp);
-        Temperature kelvin = temperatureService.convertToKelvin(inputTemp);
+        // Create a Temperature object based on user input
+        Temperature inputTemp = new Temperature(value, fromUnit);
+        Temperature convertedTemp;
 
-        model.addAttribute("celsius", celsius.getValue());
-        model.addAttribute("fahrenheit", fahrenheit.getValue());
-        model.addAttribute("kelvin", kelvin.getValue());
-        model.addAttribute("inputUnit", unit);
+        // Perform the conversion based on the selected "to" unit
+        switch (toUnit) {
+            case "Celsius":
+                convertedTemp = temperatureService.convertToCelsius(inputTemp);
+                break;
+            case "Fahrenheit":
+                convertedTemp = temperatureService.convertToFahrenheit(inputTemp);
+                break;
+            case "Kelvin":
+                convertedTemp = temperatureService.convertToKelvin(inputTemp);
+                break;
+            case "Reaumur":
+                convertedTemp = temperatureService.convertToReaumur(inputTemp);
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid target unit");
+        }
 
-        return "result";
+        // Add original input and conversion results to the model to be displayed
+        model.addAttribute("value", value);
+        model.addAttribute("fromUnit", fromUnit);
+        model.addAttribute("toUnit", toUnit);
+        model.addAttribute("convertedValue", convertedTemp.getValue());
+
+        return "index"; // Return to the same page with results
     }
 }
