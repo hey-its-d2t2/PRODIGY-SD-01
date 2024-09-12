@@ -1,10 +1,114 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Temperature Converter</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+
+        .left-panel, .right-panel {
+            width: 45%;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sub-footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+    </style>
 </head>
 <body>
+
+<!-- Navbar -->
+<nav>
+    <ul>
+        <li th:text="'Deepak Singh | Temperature Conversion'"></li>
+    </ul>
+</nav>
+
+<!-- Conversion Form and Results -->
+<div class="container">
+    <div class="left-panel">
+        <form action="/convert" method="post">
+            <label for="value">Enter Temperature:</label>
+            <input type="number" name="value" step="0.1" required>
+
+            <label for="fromUnit">From Unit:</label>
+            <select name="fromUnit" required>
+                <option value="Celsius">Celsius</option>
+                <option value="Fahrenheit">Fahrenheit</option>
+                <option value="Kelvin">Kelvin</option>
+                <option value="Reaumur">Reaumur</option>
+            </select>
+
+            <label for="toUnit">To Unit:</label>
+            <select name="toUnit" required>
+                <option value="Celsius">Celsius</option>
+                <option value="Fahrenheit">Fahrenheit</option>
+                <option value="Kelvin">Kelvin</option>
+                <option value="Reaumur">Reaumur</option>
+            </select>
+
+            <button type="submit">Convert</button>
+        </form>
+    </div>
+
+    <div class="right-panel">
+        <h3>Conversion Result</h3>
+        <p th:if="${result != null}">From <span th:text="${fromUnit}"></span>
+            to <span th:text="${toUnit}"></span>: <span th:text="${result}"></span></p>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="formula-section">
+        <h4>Conversion Formulas</h4>
+        <p>Celsius to Fahrenheit: (C * 9/5) + 32</p>
+        <p>Fahrenheit to Celsius: (F - 32) * 5/9</p>
+        <p>Celsius to Kelvin: C + 273.15</p>
+        <p>Kelvin to Celsius: K - 273.15</p>
+        <p>Celsius to Reaumur: C * 0.8</p>
+        <p>Reaumur to Celsius: Re / 0.8</p>
+    </div>
+</footer>
+
+<!-- Sub-Footer -->
+<div class="sub-footer">
+    <p>© 2024 Deepak Singh | Contact: deepsinghkumar01@gmail.com</p>
+</div>
 
 </body>
 </html>
