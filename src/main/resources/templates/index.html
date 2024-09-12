@@ -1,114 +1,83 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Temperature Converter</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
+        /* Custom Styling */
+        .conversion-card {
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
 
-        nav {
-            background-color: #333;
+        .conversion-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .input-box {
+            border: 2px solid #4CAF50;
             padding: 10px;
-            text-align: center;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .convert-btn {
+            background-color: #4CAF50;
             color: white;
-            font-size: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 18px;
         }
 
-        .container {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
+        .result-box {
+            font-size: 1.25rem;
+            font-weight: bold;
         }
-
-        .left-panel, .right-panel {
-            width: 45%;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .sub-footer {
-            background-color: #222;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: 10px;
-        }
-
     </style>
 </head>
-<body>
-
-<!-- Navbar -->
-<nav>
-    <ul>
-        <li th:text="'Deepak Singh | Temperature Conversion'"></li>
-    </ul>
+<body class="bg-green-100">
+<nav class="bg-green-600 p-4 shadow-lg">
+    <div class="container mx-auto flex justify-between">
+        <div class="text-white font-bold text-xl">Deepak Singh</div>
+        <div class="text-white font-bold text-2xl">Temperature Converter</div>
+    </div>
 </nav>
 
-<!-- Conversion Form and Results -->
-<div class="container">
-    <div class="left-panel">
-        <form action="/convert" method="post">
-            <label for="value">Enter Temperature:</label>
-            <input type="number" name="value" step="0.1" required>
+<section class="flex items-center justify-center h-screen">
+    <div class="conversion-card bg-white p-8 rounded-lg w-1/3">
+        <form th:action="@{/convert}" method="post" class="space-y-4">
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-semibold text-gray-800">Convert Temperature</h1>
+            </div>
 
-            <label for="fromUnit">From Unit:</label>
-            <select name="fromUnit" required>
+            <input type="number" name="value" placeholder="Enter temperature" class="input-box" required>
+
+            <select name="fromUnit" class="input-box" required>
                 <option value="Celsius">Celsius</option>
                 <option value="Fahrenheit">Fahrenheit</option>
                 <option value="Kelvin">Kelvin</option>
                 <option value="Reaumur">Reaumur</option>
             </select>
 
-            <label for="toUnit">To Unit:</label>
-            <select name="toUnit" required>
+            <select name="toUnit" class="input-box" required>
                 <option value="Celsius">Celsius</option>
                 <option value="Fahrenheit">Fahrenheit</option>
                 <option value="Kelvin">Kelvin</option>
                 <option value="Reaumur">Reaumur</option>
             </select>
 
-            <button type="submit">Convert</button>
+            <button type="submit" class="convert-btn w-full">Convert</button>
         </form>
+
+        <div class="mt-6">
+            <h2 class="text-center text-gray-700 text-xl">Conversion Result</h2>
+            <div th:if="${convertedValue != null}" class="result-box text-center mt-4">
+                <p th:text="'Result: ' + ${value} + ' ' + ${fromUnit} + ' = ' + ${convertedValue} + ' ' + ${toUnit}"></p>
+            </div>
+        </div>
     </div>
-
-    <div class="right-panel">
-        <h3>Conversion Result</h3>
-        <p th:if="${result != null}">From <span th:text="${fromUnit}"></span>
-            to <span th:text="${toUnit}"></span>: <span th:text="${result}"></span></p>
-    </div>
-</div>
-
-<!-- Footer -->
-<footer>
-    <div class="formula-section">
-        <h4>Conversion Formulas</h4>
-        <p>Celsius to Fahrenheit: (C * 9/5) + 32</p>
-        <p>Fahrenheit to Celsius: (F - 32) * 5/9</p>
-        <p>Celsius to Kelvin: C + 273.15</p>
-        <p>Kelvin to Celsius: K - 273.15</p>
-        <p>Celsius to Reaumur: C * 0.8</p>
-        <p>Reaumur to Celsius: Re / 0.8</p>
-    </div>
-</footer>
-
-<!-- Sub-Footer -->
-<div class="sub-footer">
-    <p>© 2024 Deepak Singh | Contact: deepsinghkumar01@gmail.com</p>
-</div>
-
+</section>
 </body>
 </html>
